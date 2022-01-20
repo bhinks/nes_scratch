@@ -81,6 +81,7 @@
   PHA
 
   JSR move_down
+  JSR move_right
 
   exit_subroutine:
     ; all done, clean up and return

@@ -1,7 +1,6 @@
 ; TODO
 ; enhance backgrounds
 ; attack
-; collision detection
 ; animated explosion
 ; game over screen
 ; title screen
@@ -40,22 +39,31 @@
     ROL buttons
     BCC loop
 
+  JSR collision_test
+  LDA #$01
+  CMP dead
+  BEQ game_over
+
   ;update tiles *after* DMA transfer
   JSR update_player
   JSR draw_player
 
   JSR update_enemy
   JSR draw_enemy
-  
-  LDA #$00
-  STA $2005
-  STA $2005
+  JMP continue
 
-  LDX #$20
-  JSR draw_background
-  LDX #$28
-  JSR draw_background
-  JSR scroll_background
+  game_over:
+    JSR end_game
+  continue:
+    LDA #$00
+    STA $2005
+    STA $2005
+
+    LDX #$20
+    JSR draw_background
+    LDX #$28
+    JSR draw_background
+    JSR scroll_background
 
   RTI
 .endproc
@@ -67,6 +75,8 @@
 .import scroll_background
 .import draw_enemy
 .import update_enemy
+.import end_game
+.import collision_test
 
 .export main
 .proc main
@@ -86,6 +96,9 @@
   STA enemy_x
   LDA #$0a
   STA enemy_y
+
+  LDA #$00
+  STA dead
 
   LDA #239   ;y is only 240 lines tall
   STA scroll
@@ -136,4 +149,5 @@ ppuctrl_settings: .res 1
 buttons: .res 1
 enemy_x: .res 1
 enemy_y: .res 1
-.exportzp player_x, player_y, player_dir, ppuctrl_settings, scroll, buttons, enemy_x, enemy_y
+dead: .res 1
+.exportzp player_x, player_y, player_dir, ppuctrl_settings, scroll, buttons, enemy_x, enemy_y, dead
