@@ -1,7 +1,7 @@
 .include "constants.inc"
 
 .segment "ZEROPAGE"
-.importzp player_x, player_y, player_dir
+.importzp player_x, player_y, player_dir, buttons
 
 .segment "CODE"
 .import main
@@ -79,33 +79,44 @@
   TYA
   PHA
 
-  LDA player_x
-  CMP #$e0
-  BCC not_at_right_edge
-  ; if BCC is not taken, we are greater than $e0
-  LDA #$00
-  STA player_dir    ; start moving left
-  JMP direction_set ; we already chose a direction,
-                    ; so we can skip the left side check
-  not_at_right_edge:
-    LDA player_x
-    CMP #$10
-    BCS direction_set
-    ; if BCS not taken, we are less than $10
-    LDA #$01
-    STA player_dir   ; start moving right
-  direction_set:
-    ; now, actually update player_x
-    LDA player_dir
-    CMP #$01
+  up_pressed:
+    LDA buttons
+    AND #%00001000
+    CMP #%00001000
+    BEQ move_up
+  down_pressed:
+    LDA buttons
+    AND #%00000100
+    CMP #%00000100
+    BEQ move_down
+  left_pressed:
+    LDA buttons
+    AND #%00000010
+    CMP #%00000010
+    BEQ move_left
+  right_pressed:
+    LDA buttons
+    AND #%00000001
+    CMP #%00000001
     BEQ move_right
-    ; if player_dir minus $01 is not zero,
-    ; that means player_dir was $00 and
-    ; we need to move left
-    DEC player_x
+    JMP exit_subroutine
+
+  move_up:
+    DEC player_y
+    DEC player_y
+    JMP exit_subroutine
+  move_down:
+    INC player_y
+    INC player_y
     JMP exit_subroutine
   move_right:
     INC player_x
+    INC player_x
+    JMP exit_subroutine
+  move_left:
+    DEC player_x
+    DEC player_x
+
   exit_subroutine:
     ; all done, clean up and return
     PLA

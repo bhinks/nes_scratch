@@ -11,8 +11,21 @@
   STA OAMADDR
   LDA #$02
   STA OAMDMA
-  
-  ; update tiles *after* DMA transfer
+
+  ;get input from controller
+  read_input:
+    LDA #$01
+    STA CTRL1
+    STA buttons
+    LSR A
+    STA CTRL1
+  loop:
+    LDA CTRL1
+    LSR A
+    ROL buttons
+    BCC loop
+
+  ;update tiles *after* DMA transfer
   JSR update_player
   JSR draw_player
   
@@ -95,4 +108,5 @@ player_y: .res 1
 player_dir: .res 1
 scroll: .res 1
 ppuctrl_settings: .res 1
-.exportzp player_x, player_y, player_dir, ppuctrl_settings, scroll
+buttons: .res 1
+.exportzp player_x, player_y, player_dir, ppuctrl_settings, scroll, buttons
