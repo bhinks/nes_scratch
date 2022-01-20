@@ -1,7 +1,6 @@
 ; TODO
-; diagonal movement
+; enhance backgrounds
 ; attack
-; enemy sprites
 ; collision detection
 ; animated explosion
 ; game over screen
@@ -12,6 +11,7 @@
 ; music
 ; multiple lives
 ; power-ups (speed, extra life, ?)
+; boss?
 
 .include "constants.inc"
 .include "header.inc"
@@ -43,6 +43,9 @@
   ;update tiles *after* DMA transfer
   JSR update_player
   JSR draw_player
+
+  JSR update_enemy
+  JSR draw_enemy
   
   LDA #$00
   STA $2005
@@ -62,6 +65,8 @@
 .import update_player
 .import draw_background
 .import scroll_background
+.import draw_enemy
+.import update_enemy
 
 .export main
 .proc main
@@ -76,6 +81,11 @@
   STA player_x
   LDA #$a0
   STA player_y
+
+  LDA #$80
+  STA enemy_x
+  LDA #$0a
+  STA enemy_y
 
   LDA #239   ;y is only 240 lines tall
   STA scroll
@@ -124,4 +134,6 @@ player_dir: .res 1
 scroll: .res 1
 ppuctrl_settings: .res 1
 buttons: .res 1
-.exportzp player_x, player_y, player_dir, ppuctrl_settings, scroll, buttons
+enemy_x: .res 1
+enemy_y: .res 1
+.exportzp player_x, player_y, player_dir, ppuctrl_settings, scroll, buttons, enemy_x, enemy_y
