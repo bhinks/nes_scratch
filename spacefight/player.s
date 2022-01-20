@@ -83,39 +83,26 @@
     LDA buttons
     AND #%00001000
     CMP #%00001000
-    BEQ move_up
+    BNE down_pressed
+    JSR move_up
   down_pressed:
     LDA buttons
     AND #%00000100
     CMP #%00000100
-    BEQ move_down
+    BNE left_pressed
+    JSR move_down
   left_pressed:
     LDA buttons
     AND #%00000010
     CMP #%00000010
-    BEQ move_left
+    BNE right_pressed
+    JSR move_left
   right_pressed:
     LDA buttons
     AND #%00000001
     CMP #%00000001
-    BEQ move_right
-    JMP exit_subroutine
-
-  move_up:
-    DEC player_y
-    DEC player_y
-    JMP exit_subroutine
-  move_down:
-    INC player_y
-    INC player_y
-    JMP exit_subroutine
-  move_right:
-    INC player_x
-    INC player_x
-    JMP exit_subroutine
-  move_left:
-    DEC player_x
-    DEC player_x
+    BNE exit_subroutine
+    JSR move_right
 
   exit_subroutine:
     ; all done, clean up and return
@@ -126,4 +113,28 @@
     PLA
     PLP
     RTS
+.endproc
+
+.proc move_up
+  DEC player_y
+  DEC player_y
+  RTS
+.endproc
+
+.proc move_down
+  INC player_y
+  INC player_y
+  RTS
+.endproc
+
+.proc move_right
+  INC player_x
+  INC player_x
+  RTS
+.endproc
+
+.proc move_left
+  DEC player_x
+  DEC player_x
+  RTS
 .endproc

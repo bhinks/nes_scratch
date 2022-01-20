@@ -1,3 +1,18 @@
+; TODO
+; diagonal movement
+; attack
+; enemy sprites
+; collision detection
+; animated explosion
+; game over screen
+; title screen
+; score
+; sound effects (shot, explosion)
+; random enemy spawning
+; music
+; multiple lives
+; power-ups (speed, extra life, ?)
+
 .include "constants.inc"
 .include "header.inc"
 
