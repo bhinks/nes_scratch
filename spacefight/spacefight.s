@@ -96,8 +96,8 @@
   STA enemy_x
   LDA #$0a
   STA enemy_y
-
   LDA #$00
+  STA enemy_dir
   STA dead
 
   LDA #239   ;y is only 240 lines tall
@@ -143,11 +143,11 @@ palettes:
 .segment "ZEROPAGE"
 player_x: .res 1
 player_y: .res 1
-player_dir: .res 1
 scroll: .res 1
 ppuctrl_settings: .res 1
 buttons: .res 1
 enemy_x: .res 1
 enemy_y: .res 1
+enemy_dir: .res 1
 dead: .res 1
-.exportzp player_x, player_y, player_dir, ppuctrl_settings, scroll, buttons, enemy_x, enemy_y, dead
+.exportzp player_x, player_y, enemy_dir, ppuctrl_settings, scroll, buttons, enemy_x, enemy_y, dead

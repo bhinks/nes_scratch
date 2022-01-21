@@ -1,7 +1,7 @@
 .include "constants.inc"
 
 .segment "ZEROPAGE"
-.importzp player_x, player_y, player_dir, buttons
+.importzp player_x, player_y, buttons
 
 .segment "CODE"
 .import main
@@ -101,8 +101,35 @@
     LDA buttons
     AND #%00000001
     CMP #%00000001
-    BNE exit_subroutine
+    BNE edge_check
     JSR move_right
+
+  edge_check:
+    LDA player_x
+    CMP #$e0
+    BCS stop_player_right
+    CMP #$10
+    BCC stop_player_left
+    BEQ stop_player_left
+    LDA player_y
+    CMP #$d0
+    BCS stop_player_down
+    CMP #$10
+    BCC stop_player_up
+    JMP exit_subroutine
+
+    stop_player_down:
+      JSR move_up
+      JMP exit_subroutine
+    stop_player_left:
+      JSR move_right
+      JMP exit_subroutine
+    stop_player_right:
+      JSR move_left
+      JMP exit_subroutine
+    stop_player_up:
+      JSR move_down
+      JMP exit_subroutine
 
   exit_subroutine:
     ; all done, clean up and return
