@@ -46,6 +46,10 @@
   STA $020b
   STA $020c
   STA $020f
+  STA $0220
+  STA $0221
+  STA $0222
+  STA $0223
 
   ; restore registers and return
   PLA

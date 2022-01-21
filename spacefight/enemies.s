@@ -1,7 +1,7 @@
 .include "constants.inc"
 
 .segment "ZEROPAGE"
-.importzp enemy_x, enemy_y, enemy_dir
+.importzp enemy_x, enemy_y, enemy_dir, enemy_count
 
 .segment "CODE"
 .import main

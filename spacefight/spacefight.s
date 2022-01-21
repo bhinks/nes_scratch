@@ -50,6 +50,11 @@
 
   JSR update_enemy
   JSR draw_enemy
+
+  JSR fire_shot
+  JSR update_shots
+  JSR kill_test
+  JSR draw_shots
   JMP continue
 
   game_over:
@@ -77,6 +82,10 @@
 .import update_enemy
 .import end_game
 .import collision_test
+.import fire_shot
+.import draw_shots
+.import update_shots
+.import kill_test
 
 .export main
 .proc main
@@ -99,6 +108,8 @@
   LDA #$00
   STA enemy_dir
   STA dead
+  STA shot_count
+  STA enemy_count
 
   LDA #239   ;y is only 240 lines tall
   STA scroll
@@ -136,7 +147,7 @@ palettes:
   .byte $0d, $06, $16, $26
   .byte $0d, $09, $19, $29
   .byte $0d, $00, $10, $20
-  .byte $0d, $01, $11, $21
+  .byte $0d, $27, $16, $38
   .byte $0d, $06, $16, $26
   .byte $0d, $09, $19, $29
 
@@ -149,5 +160,18 @@ buttons: .res 1
 enemy_x: .res 1
 enemy_y: .res 1
 enemy_dir: .res 1
+enemy_count: .res 1
 dead: .res 1
-.exportzp player_x, player_y, enemy_dir, ppuctrl_settings, scroll, buttons, enemy_x, enemy_y, dead
+shot1_x: .res 1
+shot1_y: .res 1
+shot2_x: .res 1
+shot2_y: .res 1
+shot3_x: .res 1
+shot3_y: .res 1
+shot4_x: .res 1
+shot4_y: .res 1
+shot_count: .res 1
+.exportzp player_x, player_y, dead
+.exportzp enemy_dir, enemy_x, enemy_y, enemy_count
+.exportzp ppuctrl_settings, scroll, buttons
+.exportzp shot_count, shot1_x, shot1_y, shot2_x, shot2_y, shot3_x, shot3_y, shot4_x, shot4_y
