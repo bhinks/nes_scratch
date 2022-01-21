@@ -109,6 +109,9 @@
 .endproc
 
 .proc kill_test
+  LDA shot_count
+  CMP #$00
+  BEQ end
   test_x:
     LDA shot1_x
     SBC enemy_x

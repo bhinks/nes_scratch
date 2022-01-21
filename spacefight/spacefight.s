@@ -1,6 +1,5 @@
 ; TODO
 ; enhance backgrounds
-; attack
 ; animated explosion
 ; game over screen
 ; title screen

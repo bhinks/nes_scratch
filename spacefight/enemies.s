@@ -80,6 +80,17 @@
   TYA
   PHA
 
+  LDA enemy_count
+  CMP #$00
+  BNE move_enemy
+  LDA #$01
+  STA enemy_count
+  LDA #$80
+  STA enemy_x
+  LDA #$0a
+  STA enemy_y
+
+  move_enemy:
   JSR move_down
   LDA enemy_x
   CMP #$e0
