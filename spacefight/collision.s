@@ -11,26 +11,26 @@
   test_x:
     LDA player_x
     SBC enemy_x
-    CMP #$08
+    CMP #$0f
     BEQ test_y
     BCC test_y
     LDA player_x
-    ADC #$08
+    ADC #$10
     SBC enemy_x
-    CMP #$08
+    CMP #$0f
     BEQ test_y
     BCC test_y
     JMP end
   test_y:
     LDA player_y
     SBC enemy_y
-    CMP #$08
+    CMP #$0f
     BEQ end_game
     BCC end_game
     LDA player_y
-    ADC #$08
+    ADC #$10
     SBC enemy_y
-    CMP #$08
+    CMP #$0f
     BEQ end_game
     BCC end_game
     JMP end
