@@ -85,9 +85,9 @@
   BNE move_enemy
   LDA #$01
   STA enemy_count
-  LDA #$80
-  STA enemy_x
-  LDA #$0a
+  ;LDA #$80
+  ;STA enemy_x
+  LDA #$00
   STA enemy_y
 
   move_enemy:

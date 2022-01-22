@@ -102,7 +102,7 @@
 
   LDA #$80
   STA enemy_x
-  LDA #$0a
+  LDA #$00
   STA enemy_y
   LDA #$00
   STA enemy_dir

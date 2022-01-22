@@ -153,7 +153,7 @@
     STA $021a
     STA $021e
     STA $0210
-    STA $0213
+    ;STA $0213
     STA $0214
     STA $0217
     STA $0218
