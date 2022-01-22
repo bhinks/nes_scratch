@@ -24,7 +24,7 @@
   LDA #$02
   STA OAMDMA
 
-  ;get input from controller
+  ; get input from controller
   read_input:
     LDA #$01
     STA CTRL1
@@ -36,13 +36,13 @@
     LSR A
     ROL buttons
     BCC loop
-
+  ; check for collisions between player and enemy
   JSR collision_test
   LDA #$01
   CMP dead
   BEQ game_over
 
-  ;update tiles *after* DMA transfer
+  ; update and redraw sprite tiles
   JSR update_player
   JSR draw_player
 
@@ -54,13 +54,14 @@
   JSR kill_test
   JSR draw_shots
   JMP continue
-
+  ; check explosion animation frame count and stop incrementing if animation is finished
   game_over:
     JSR end_game
     LDA #60
     CMP explosion_frames
     BEQ continue
     INC explosion_frames
+  ; end sprite and game state updates. scroll background.
   continue:
     LDA #$00
     STA $2005
@@ -97,7 +98,7 @@
   LDX #$00
   STX PPUADDR
 
-  ;init zero-page values
+  ; init zero-page values
   LDA #$80
   STA player_x
   LDA #$a0
@@ -107,6 +108,7 @@
   STA enemy_x
   LDA #$00
   STA enemy_y
+  
   LDA #$00
   STA enemy_dir
   STA dead
@@ -114,7 +116,7 @@
   STA enemy_count
   STA explosion_frames
 
-  LDA #239   ;y is only 240 lines tall
+  LDA #239   ; y is only 240 lines tall
   STA scroll
 
   load_palettes:
@@ -128,10 +130,10 @@
     BIT PPUSTATUS
     BPL vblankwait
 
-    LDA #%10010000 ;turn on NMIs, sprites use first pattern table
+    LDA #%10010000 ; turn on NMIs, sprites use first pattern table
     STA ppuctrl_settings
     STA PPUCTRL
-    LDA #%00011000 ;turn on screen
+    LDA #%00011000 ; turn on screen
     STA PPUMASK
   forever:
     JMP forever

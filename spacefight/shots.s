@@ -38,15 +38,17 @@
   PHA
   TYA
   PHA
-  ; write enemy ship tile numbers
+  ; write empty tile for bullet until one if fired
   LDA #$00
   STA $0221
  
-  ; write enemy ship tile attributes
-  ; use palette 0
+  ; write bullet tile attributes
+  ; use palette 3
   LDA #%00000011
   STA $0222
 
+  ; check current shot count
+  ; only one shot is allowed on the screen at a time currently
   LDY #$09
   LDA shot_count
   check_one:
@@ -83,6 +85,7 @@
   DEC shot1_y
   DEC shot1_y
 
+  ; check if bullet has hit the top of the screen
   edge_check:
     LDA shot1_y
     CMP #$10
@@ -112,6 +115,7 @@
   LDA shot_count
   CMP #$00
   BEQ end
+  ; check for shot collision with enemy
   test_x:
     LDA shot1_x
     SBC enemy_x
@@ -138,6 +142,7 @@
     BEQ kill_enemy
     BCC kill_enemy
     JMP end
+  ; remove enemy and bullet sprites from the screen on a hit
   kill_enemy:
     LDA #$00
     STA $0220

@@ -5,7 +5,7 @@
 .export draw_background
 
 .proc draw_background
-  ;write a nametable
+  ; write a nametable
   LDA PPUSTATUS
   TXA
   STA PPUADDR
@@ -48,7 +48,7 @@
   LDA #$2e
   STA PPUDATA
 
-  ;write attribute table
+  ; write attribute table
   LDA PPUSTATUS
   TXA
   ADC #$03

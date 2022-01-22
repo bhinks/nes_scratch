@@ -9,14 +9,14 @@
 .export update_enemy
 
 .proc draw_enemy
-  ; save registers
+  ;save registers
   PHP
   PHA
   TXA
   PHA
   TYA
   PHA
-  ; write enemy ship tile numbers
+  ;write enemy ship tile numbers
   LDA #$07
   STA $0211
   LDA #$08
@@ -25,35 +25,35 @@
   STA $0219
   LDA #$06
   STA $021d
-  ; write enemy ship tile attributes
-  ; use palette 0
+  ;write enemy ship tile attributes
+  ;use palette 2 and flip some of the player sprite tiles
   LDA #%10000010
   STA $0212
   STA $0216
   LDA #%00000010
   STA $021a
   STA $021e
-  ; store tile locations
-  ; top left tile:
+  ;store tile locations
+  ;top left tile:
   LDA enemy_y
   STA $0210
   LDA enemy_x
   STA $0213
-  ; top right tile (x + 8):
+  ;top right tile (x + 8):
   LDA enemy_y
   STA $0214
   LDA enemy_x
   CLC
   ADC #$08
   STA $0217
-  ; bottom left tile (y + 8):
+  ;bottom left tile (y + 8):
   LDA enemy_y
   CLC
   ADC #$08
   STA $0218
   LDA enemy_x
   STA $021b
-  ; bottom right tile (x + 8, y + 8)
+  ;bottom right tile (x + 8, y + 8)
   LDA enemy_y
   CLC
   ADC #$08
@@ -62,7 +62,7 @@
   CLC
   ADC #$08
   STA $021f
-  ; restore registers and return
+  ;restore registers and return
   PLA
   TAY
   PLA
@@ -80,37 +80,40 @@
   TYA
   PHA
 
+  ; if no enemy is currently on the screen, spawn one in
+  ; base position on former enemy's x-coord
   LDA enemy_count
   CMP #$00
   BNE move_enemy
   LDA #$01
   STA enemy_count
-  ;LDA #$80
-  ;STA enemy_x
+  LDA enemy_x
+  ADC #$0f
+  STA enemy_x
   LDA #$00
   STA enemy_y
 
   move_enemy:
+  ; enemy movement is always downward
+  ; implement edge checks to bounce enemy's x-direction back and forth
   JSR move_down
   LDA enemy_x
+  ; test proximity to right screen edge
   CMP #$e0
   BCC not_at_right_edge
-  ; if BCC is not taken, we are greater than $e0
   LDA #$00
-  STA enemy_dir    ; start moving left
-  JMP direction_set ; we already chose a direction,
-                    ; so we can skip the left side check
+  STA enemy_dir
+  JMP direction_set
   not_at_right_edge:
     LDA enemy_x
+    ; test proximity to left screen edge
     CMP #$10
     BCS direction_set
-    ; if BCS not taken, we are less than $10
     LDA #$01
-    STA enemy_dir   ; start moving right
-
-  
+    STA enemy_dir
   direction_set:
     LDA enemy_dir
+    ; move left if direction bit is not set, right if it is
     CMP #$01
     BEQ go_right
     JSR move_left

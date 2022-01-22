@@ -11,8 +11,7 @@
   LDA scroll
   CMP #$00 ; did we scroll to the end of a nametable?
   BNE set_scroll_positions
-  ; if yes,
-  ; update base nametable
+  ; if yes, update base nametable
   LDA ppuctrl_settings
   EOR #%00000010 ; flip bit #1 to its opposite
   STA ppuctrl_settings

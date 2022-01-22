@@ -13,7 +13,7 @@
 
   LDA #$ff
   clear_oam:
-    STA $0200,X ;set sprite y-positions off-screen
+    STA $0200,X ; set sprite y-positions off-screen
     INX
     INX
     INX

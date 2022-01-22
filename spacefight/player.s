@@ -78,7 +78,7 @@
   PHA
   TYA
   PHA
-
+  ; read all d-pad inputs to allow for diagonal movement
   up_pressed:
     LDA buttons
     AND #%00001000
@@ -103,7 +103,7 @@
     CMP #%00000001
     BNE edge_check
     JSR move_right
-
+  ; check if player is running into any edges and push back in the opposing direction
   edge_check:
     LDA player_x
     CMP #$e0

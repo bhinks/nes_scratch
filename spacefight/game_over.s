@@ -40,8 +40,8 @@
   STA $0205
   STA $0209
   STA $020d
-  ; write player ship tile attributes
-  ; use palette 0
+  ; write explosion tile attributes
+  ; use palette 1 and flip as needed
   LDA #%00000001
   STA $0202
   LDA #%01000001
@@ -79,6 +79,8 @@
   CLC
   ADC #$08
   STA $020f
+
+  ; check explosion frame count and advance to the next set of tiles when appropriate
   LDA explosion_frames
   CMP #10
   BCS frame_2
