@@ -1,6 +1,5 @@
 ; TODO
 ; enhance backgrounds
-; animated explosion
 ; game over screen
 ; title screen
 ; score
@@ -58,6 +57,10 @@
 
   game_over:
     JSR end_game
+    LDA #60
+    CMP explosion_frames
+    BEQ continue
+    INC explosion_frames
   continue:
     LDA #$00
     STA $2005
@@ -109,6 +112,7 @@
   STA dead
   STA shot_count
   STA enemy_count
+  STA explosion_frames
 
   LDA #239   ;y is only 240 lines tall
   STA scroll
@@ -170,7 +174,9 @@ shot3_y: .res 1
 shot4_x: .res 1
 shot4_y: .res 1
 shot_count: .res 1
+explosion_frames: .res 1
 .exportzp player_x, player_y, dead
 .exportzp enemy_dir, enemy_x, enemy_y, enemy_count
 .exportzp ppuctrl_settings, scroll, buttons
 .exportzp shot_count, shot1_x, shot1_y, shot2_x, shot2_y, shot3_x, shot3_y, shot4_x, shot4_y
+.exportzp explosion_frames
