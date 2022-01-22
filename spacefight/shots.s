@@ -1,7 +1,11 @@
 .include "constants.inc"
 
 .segment "ZEROPAGE"
-.importzp buttons, shot_count, enemy_x, enemy_y, enemy_count, player_x, player_y, shot1_x, shot1_y, shot2_x, shot2_y, shot3_x, shot3_y, shot4_x, shot4_y
+.importzp buttons, shot_count, enemy_x, enemy_y, enemy_died, enemy_count
+.importzp explosion_x, explosion_y, explosion_frames
+.importzp player_x, player_y, shot1_x
+.importzp shot1_y, shot2_x, shot2_y, shot3_x, shot3_y, shot4_x, shot4_y
+
 
 .segment "CODE"
 .import main
@@ -144,6 +148,10 @@
     JMP end
   ; remove enemy and bullet sprites from the screen on a hit
   kill_enemy:
+    LDA enemy_x
+    STA explosion_x
+    LDA enemy_y
+    STA explosion_y
     LDA #$00
     STA $0220
     STA $0221
@@ -167,6 +175,9 @@
     STA $021f
     STA shot_count
     STA enemy_count
+    STA explosion_frames
+    LDA #$01
+    STA enemy_died
   end:
     RTS
 .endproc

@@ -1,7 +1,7 @@
 .include "constants.inc"
 
 .segment "ZEROPAGE"
-.importzp player_x, player_y, enemy_x, enemy_y, dead
+.importzp player_x, player_y, enemy_x, enemy_y, dead, explosion_frames, explosion_x, explosion_y, enemy_died
 
 .segment "CODE"
 .import main
@@ -35,6 +35,17 @@
     BCC end_game
     JMP end
   end_game:
+    LDA player_x
+    STA explosion_x
+    LDA player_y
+    STA explosion_y
+    LDA #$f8
+    STA player_y
+    LDA #$80
+    STA player_x
+    LDA #$00
+    STA enemy_y
+    STA enemy_x
     LDA #$01
     STA dead
   end:

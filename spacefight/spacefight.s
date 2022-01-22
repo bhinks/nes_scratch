@@ -53,14 +53,21 @@
   JSR update_shots
   JSR kill_test
   JSR draw_shots
+
+  LDA #$01
+  CMP enemy_died
+  BEQ explode_enemy
+
   JMP continue
+
   ; check explosion animation frame count and stop incrementing if animation is finished
   game_over:
+    JSR explode
     JSR end_game
-    LDA #60
-    CMP explosion_frames
-    BEQ continue
-    INC explosion_frames
+    JMP continue
+  explode_enemy:
+    JSR explode
+    
   ; end sprite and game state updates. scroll background.
   continue:
     LDA #$00
@@ -89,6 +96,7 @@
 .import draw_shots
 .import update_shots
 .import kill_test
+.import explode
 
 .export main
 .proc main
@@ -166,6 +174,7 @@ enemy_x: .res 1
 enemy_y: .res 1
 enemy_dir: .res 1
 enemy_count: .res 1
+enemy_died: .res 1
 dead: .res 1
 shot1_x: .res 1
 shot1_y: .res 1
@@ -177,8 +186,10 @@ shot4_x: .res 1
 shot4_y: .res 1
 shot_count: .res 1
 explosion_frames: .res 1
+explosion_x: .res 1
+explosion_y: .res 1
 .exportzp player_x, player_y, dead
-.exportzp enemy_dir, enemy_x, enemy_y, enemy_count
+.exportzp enemy_dir, enemy_x, enemy_y, enemy_count, enemy_died
 .exportzp ppuctrl_settings, scroll, buttons
 .exportzp shot_count, shot1_x, shot1_y, shot2_x, shot2_y, shot3_x, shot3_y, shot4_x, shot4_y
-.exportzp explosion_frames
+.exportzp explosion_frames, explosion_x, explosion_y
